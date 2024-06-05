@@ -1,0 +1,36 @@
+.employee-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .employee-page h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .employee-card {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .employee-card img {
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+  }
+  
+  .employee-card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .employee-card-text {
+    font-size: 1rem;
+  }
+  
+  .add-employee-button {
+    display: block;
+    margin: 20px auto;
+    width: 200px;
+  }
+  

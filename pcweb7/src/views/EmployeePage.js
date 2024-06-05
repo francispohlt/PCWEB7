@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from 'firebase/firestore';
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './EmployeePage.css'; // Import CSS for styling
@@ -50,10 +50,10 @@ const EmployeePage = () => {
               <Card.Body>
                 <Card.Title>{employee.name}</Card.Title>
                 <Card.Text>
-                  <strong>Tasking:</strong> {employee.Tasking}<br />
+                  <strong>Tasking:</strong> {employee.Tasking || 'Free to accept new task'}<br />
                   <strong>Skills:</strong> {employee.skills}<br />
                   <strong>Total Task Hours:</strong> {employee.taskProgress !== 'completed' ? employee.taskHours : 0}<br />
-                  <strong>Date Joined:</strong> {new Date(employee.dateJoined).toLocaleDateString()}
+                  <strong>Date Joined:</strong> {employee.dateJoined ? new Date(employee.dateJoined.seconds * 1000).toLocaleDateString() : 'N/A'}
                 </Card.Text>
                 <Button variant="primary" onClick={() => navigate(`/update-employee/${employee.id}`)}>Update</Button>
               </Card.Body>

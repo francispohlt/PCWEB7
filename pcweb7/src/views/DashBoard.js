@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from 'firebase/firestore';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import './Dashboard.css'; // Import CSS for styling
@@ -41,15 +41,20 @@ const Dashboard = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  // Filter employees to exclude those with completed tasks
-  const activeEmployees = employees.filter(employee => employee.taskProgress !== 'completed');
+  // Process employees to reduce task hours for completed tasks
+  const processedEmployees = employees.map(employee => {
+    if (employee.taskProgress === 'completed') {
+      return { ...employee, taskHours: 0 };
+    }
+    return employee;
+  });
 
-  // Prepare chart data only for employees with incomplete tasks
+  // Prepare chart data for all employees
   const chartData = {
-    labels: activeEmployees.map(emp => emp.name),
+    labels: processedEmployees.map(emp => emp.name),
     datasets: [{
       label: 'Task Hours',
-      data: activeEmployees.map(emp => emp.taskHours),
+      data: processedEmployees.map(emp => emp.taskHours),
       backgroundColor: 'rgba(75, 192, 192, 0.2)',
       borderColor: 'rgba(75, 192, 192, 1)',
       borderWidth: 1,
@@ -66,33 +71,31 @@ const Dashboard = () => {
 
   return (
     <>
-    <div className="dashboard">
-      <h2>Dashboard</h2>
-     
-      <div className="chart-container">
-        <Bar data={chartData} options={chartOptions} />
-      </div>
-
-      <table className="employee-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Tasking</th>
-            <th>Task Progress</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees.map((employee) => (
-            <tr key={employee.id}>
-              <td>{employee.name}</td>
-              <td>{employee.Tasking}</td>
-              <td>{employee.taskProgress === 'completed' ? 'Task Completed' : `${employee.taskProgress}`}</td>
+      <div className="dashboard">
+        <h2>Dashboard</h2>
+        <div className="chart-container">
+          <Bar data={chartData} options={chartOptions} />
+        </div>
+        <table className="employee-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Tasking</th>
+              <th>Task Progress</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </>
+          </thead>
+          <tbody>
+            {employees.map((employee) => (
+              <tr key={employee.id}>
+                <td>{employee.name}</td>
+                <td>{employee.Tasking}</td>
+                <td>{employee.taskProgress === 'completed' ? 'Task Completed' : `${employee.taskProgress}`}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 };
 

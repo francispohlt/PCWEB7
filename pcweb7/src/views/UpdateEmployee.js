@@ -25,7 +25,14 @@ const UpdateEmployee = () => {
         setName(data.name);
         setPreviewImage(data.imageUrl);
         setSkills(data.skills);
-        setDateJoined(data.dateJoined.split('T')[0]);  // Assuming dateJoined is an ISO string
+
+        // Convert Firebase timestamp to ISO string for input type="date"
+        if (data.dateJoined) {
+          const date = new Date(data.dateJoined.seconds * 1000); // Assuming dateJoined is a Firestore Timestamp
+          setDateJoined(date.toISOString().split('T')[0]);
+        } else {
+          setDateJoined('');
+        }
       } else {
         console.log('No such document!');
       }
@@ -48,7 +55,7 @@ const UpdateEmployee = () => {
         name,
         skills,
         imageUrl,
-        dateJoined
+        dateJoined: new Date(dateJoined) // Store as a JavaScript Date object
       });
 
       navigate('/employees');

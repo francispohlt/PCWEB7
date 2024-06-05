@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { db, storage } from '../firebase';
-import { collection, getDocs, addDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { Container, Form, Button, Table, Image } from 'react-bootstrap';
+import { collection, getDocs, addDoc, Timestamp } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { Container, Form, Button, Image } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const CreateEmployee = () => {
   const [name, setName] = useState('');
@@ -12,6 +13,7 @@ const CreateEmployee = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -45,23 +47,14 @@ const CreateEmployee = () => {
       await addDoc(collection(db, 'employees'), {
         name,
         taskHours: 0,
-        Tasking: 'New Task',
+        Tasking: '', // Set tasking to an empty string
         taskProgress: 'Not Started',
         skills,
-        dateJoined: new Date().toISOString(),
+        dateJoined: Timestamp.fromDate(new Date()), // Store dateJoined as Firestore Timestamp
         imageUrl,
       });
-      setName('');
-      setImage(null);
-      setPreviewImage("https://zca.sg/img/placeholder");
-      setSkills('');
-      // Re-fetch employees to update the list
-      const querySnapshot = await getDocs(collection(db, 'employees'));
-      const employeesData = [];
-      querySnapshot.forEach((doc) => {
-        employeesData.push({ ...doc.data(), id: doc.id });
-      });
-      setEmployees(employeesData);
+      // Redirect to EmployeePage
+      navigate('/employees');
     } catch (error) {
       console.error('Error creating employee:', error);
     }

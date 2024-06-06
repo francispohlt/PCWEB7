@@ -11,6 +11,7 @@ import EmployeePage from './views/EmployeePage';
 import Navigation from './components/navigation'; // Import the navigation component
 import PrivateRoute from './components/PrivateRoute';
 import UpdateEmployee from './views/UpdateEmployee';
+import Footer from './components/Footer';
 // import logo from './assets/build-logo-1.png';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/employees" element={<EmployeePage />} />
           </Route>
       </Routes>
+      <Footer /> 
     </BrowserRouter>
   );
 }

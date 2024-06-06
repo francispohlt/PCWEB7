@@ -1,63 +1,37 @@
 import { useEffect, useState } from "react";
-import { Container, Image, Nav, Navbar, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import {collection,getDocs} from "firebase/firestore";
-import {db} from "../firebase";
+import { Container, Image, Row, Col } from "react-bootstrap";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 import Navigation from "../components/navigation";
+import logo from '../assets/build-logo-1.png';
 
-export default function PostPageHome() {
+export default function HomePage() {
   const [posts, setPosts] = useState([]);
 
-   async function getAllPosts() {
+  async function getAllPosts() {
     const query = await getDocs(collection(db, "posts"));
     const posts = query.docs.map((doc) => {
-      // console.log(doc.data());
-      
       return { id: doc.id, ...doc.data() };
     });
-      setPosts(posts);
-      
+    setPosts(posts);
   }
 
   useEffect(() => {
     getAllPosts();
   }, []);
 
-  const ImagesRow = () => {
-    return posts.map((post, index) => <ImageSquare key={index} post={post} />);
-  };
-
   return (
     <>
-      <Container>
-        <Row>
-          <ImagesRow />
-        </Row>
+      <Container className="text-center my-5">
+        <Image
+          src={logo} // Use the imported logo
+          alt="Build Logo"
+          fluid
+        />
+        <p className="mt-4">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+        </p>
       </Container>
     </>
-  );
-}
-
-function ImageSquare({ post }) {
-  const { image, id } = post;
-  console.log(image);
-  return (
-    <Link
-      to={`post/${id}`}
-      style={{
-        width: "18rem",
-        marginLeft: "1rem",
-        marginTop: "2rem",
-      }}
-    >
-      <Image
-        src={image}
-        style={{
-          objectFit: "cover",
-          width: "18rem",
-          height: "18rem",
-        }}
-      />
-    </Link>
   );
 }

@@ -10,27 +10,32 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const Dashboard = () => {
   const [employees, setEmployees] = useState([]);
+  const [taskings, setTaskings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchEmployees = async () => {
+    const fetchData = async () => {
       try {
-        const employeesData = [];
-        const querySnapshot = await getDocs(collection(db, 'employees'));
-        querySnapshot.forEach((doc) => {
-          employeesData.push({ ...doc.data(), id: doc.id });
-        });
+        // Fetch employees
+        const employeesSnapshot = await getDocs(collection(db, 'employees'));
+        const employeesData = employeesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        // Fetch taskings
+        const taskingsSnapshot = await getDocs(collection(db, 'taskings'));
+        const taskingsData = taskingsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
         setEmployees(employeesData);
+        setTaskings(taskingsData);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching employees:', err);
+        console.error('Error fetching data:', err);
         setError(err);
         setLoading(false);
       }
     };
 
-    fetchEmployees();
+    fetchData();
   }, []);
 
   if (loading) {
@@ -41,20 +46,19 @@ const Dashboard = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  // Process employees to reduce task hours for completed tasks
-  const processedEmployees = employees.map(employee => {
-    if (employee.taskProgress === 'completed') {
-      return { ...employee, taskHours: 0 };
-    }
-    return employee;
+  // Join employees and taskings
+  const employeesWithTasks = employees.map(employee => {
+    const tasks = taskings.filter(task => task.employeeId === employee.id && task.taskProgress !== 'completed');
+    const totalTaskHours = tasks.reduce((sum, task) => sum + task.taskHours, 0);
+    return { ...employee, tasks, totalTaskHours };
   });
 
   // Prepare chart data for all employees
   const chartData = {
-    labels: processedEmployees.map(emp => emp.name),
+    labels: employeesWithTasks.map(emp => emp.name),
     datasets: [{
       label: 'Task Hours',
-      data: processedEmployees.map(emp => emp.taskHours),
+      data: employeesWithTasks.map(emp => emp.totalTaskHours),
       backgroundColor: 'rgba(75, 192, 192, 0.2)',
       borderColor: 'rgba(75, 192, 192, 1)',
       borderWidth: 1,
@@ -67,6 +71,8 @@ const Dashboard = () => {
         beginAtZero: true,
       },
     },
+    responsive: true,
+    maintainAspectRatio: false,
   };
 
   return (
@@ -82,16 +88,25 @@ const Dashboard = () => {
               <th>Name</th>
               <th>Tasking</th>
               <th>Task Progress</th>
+              <th>Due Date</th>
+              <th>Task Hours</th>
             </tr>
           </thead>
           <tbody>
-            {employees.map((employee) => (
-              <tr key={employee.id}>
-                <td>{employee.name}</td>
-                <td>{employee.Tasking}</td>
-                <td>{employee.taskProgress === 'completed' ? 'Task Completed' : `${employee.taskProgress}`}</td>
-              </tr>
-            ))}
+            {employeesWithTasks.map((employee) => {
+              const taskCount = employee.tasks.length;
+              return employee.tasks.map((task, index) => (
+                <tr key={`${employee.id}-${task.id}`}>
+                  {index === 0 && (
+                    <td rowSpan={taskCount}>{employee.name}</td>
+                  )}
+                  <td>{task.taskDescription}</td>
+                  <td>{task.taskProgress}</td>
+                  <td>{task.dateDue && task.dateDue.seconds ? new Date(task.dateDue.seconds * 1000).toLocaleDateString() : 'N/A'}</td>
+                  <td>{task.taskHours}</td>
+                </tr>
+              ));
+            })}
           </tbody>
         </table>
       </div>

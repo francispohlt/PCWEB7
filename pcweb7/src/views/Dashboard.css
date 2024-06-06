@@ -2,15 +2,37 @@
     padding: 20px;
   }
   
+  .container {
+    max-width: 1000px; /* Adjust the width as needed */
+    margin: 0 auto;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 1.5rem; /* Adjust the margin as needed */
+  }
+  
   .chart-container {
     width: 100%;
     height: 400px; /* Adjust height as needed */
-    margin-bottom: 20px; /* Add margin below the chart */
+    margin-bottom: 5rem; /* Add margin below the chart */
+  }
+  
+  .calendar-container {
+    width: 100%;
+    height: 700px; /* Adjust height as needed */
+    margin-bottom: 5rem; /* Add margin below the calendar */
+  }
+  
+  .employee-table-container {
+    width: 100%;
+    margin-top: 1.5rem;
   }
   
   .employee-table {
     width: 100%;
-    margin-top: 20px;
     border-collapse: collapse;
   }
   

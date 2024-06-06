@@ -4,10 +4,14 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 
 const PrivateRoute = () => {
-  const [user, loading] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
 
   if (loading) {
-    return <div>Loading...</div>; // Display a loading indicator while checking auth state
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
   }
 
   return user ? <Outlet /> : <Navigate to="/login" />;

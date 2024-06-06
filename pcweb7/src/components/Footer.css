@@ -1,7 +1,7 @@
 .footer {
     text-align: center;
     padding: 10px 0;
-    background-color: #f8f9fa;
+    background-color: #ffffff;
   }
   
   .footer-line {
@@ -16,7 +16,7 @@
   
   .footer-link {
     text-decoration: none;
-    color: #007bff;
+    color: #000000;
   }
   
   .footer-link:hover {

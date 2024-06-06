@@ -7,7 +7,6 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import './Dashboard.css'; // Import CSS for styling
-import Navigation from "../components/navigation";
 import CustomToolbar from '../components/CustomToolbar'; // Correct import path
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);

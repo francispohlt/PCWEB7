@@ -14,7 +14,7 @@ import Navigation from './components/navigation'; // Import the navigation compo
 import PrivateRoute from './components/PrivateRoute';
 import UpdateEmployee from './views/UpdateEmployee';
 import Footer from './components/Footer';
-
+import Chat from './views/Chat';
 function App() {
 
   return (
@@ -25,6 +25,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/update-employee/:id" element={<UpdateEmployee />} />
+        <Route path="/chat" element={<Chat />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/create-task" element={<CreateTask />} />

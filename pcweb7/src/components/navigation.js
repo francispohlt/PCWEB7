@@ -20,6 +20,7 @@ export default function Navigation() {
           <Nav.Link href="/dashboard">Dashboard</Nav.Link>
           <Nav.Link href="/employees">Employees</Nav.Link>
           <Nav.Link href="/create-task">New Task</Nav.Link>
+          <Nav.Link href="/chat ">Chats</Nav.Link>
           <Nav.Link onClick={handleSignOut}>Sign Out</Nav.Link>
         </Nav>
       </Container>

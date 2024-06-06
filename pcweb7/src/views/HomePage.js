@@ -29,8 +29,7 @@ export default function HomePage() {
           fluid
         />
         <p className="mt-4">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-        </p>
+        Task and Track is designed to offer a clear and immediate overview of employees' tasks and committed task hours. This enables personnel to easily view and manage their current assignments and monitor their progress effectively. The dashboard serves as a Minimum Viable Product (MVP), providing a point of view for supervisors to oversee and manage task distribution and tracking.        </p>
       </Container>
     </>
   );
